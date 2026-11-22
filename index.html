@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Samet Muriç (@lepotane) — Systems Architect, AI Inference &amp; Full-Stack Engineer</title>
+  <meta name="description" content="Engineering portfolio of Samet Muriç (@lepotane) — Host-RAM LLM KV cache streaming, MRC Tuner Studio ECU calibration workstation, enterprise SaaS &amp; automotive telemetry." />
+  <link rel="icon" href="https://github.com/lepotane.png?size=64" />
+  <style>
+    :root {
+      --bg-deep: #050811;
+      --bg-panel: #090f1e;
+      --bg-card: #0c1426;
+      --border: #1e293b;
+      --border-light: #2b3b54;
+      --text: #f8fafc;
+      --text-soft: #cbd5e1;
+      --muted: #94a3b8;
+      --dim: #64748b;
+      --cyan: #22d3ee;
+      --blue: #3b82f6;
+      --purple: #a855f7;
+      --pink: #ec4899;
+      --amber: #f59e0b;
+      --emerald: #10b981;
+      --rose: #f43f5e;
+      --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background-color: var(--bg-deep);
+      background-image:
+        radial-gradient(circle at 14% 18%, rgba(34, 211, 238, 0.10), transparent 38%),
+        radial-gradient(circle at 86% 26%, rgba(168, 85, 247, 0.11), transparent 40%),
+        radial-gradient(circle at 50% 82%, rgba(16, 185, 129, 0.07), transparent 45%),
+        linear-gradient(to right, rgba(30, 41, 59, 0.28) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(30, 41, 59, 0.28) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 38px 38px, 38px 38px;
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2.25rem 1.25rem 4rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .spectrum-divider {
+      height: 3px;
+      width: 100%;
+      margin: 2.25rem 0;
+      border-radius: 3px;
+      background: linear-gradient(90deg, transparent 0%, var(--cyan) 22%, var(--blue) 48%, var(--purple) 76%, transparent 100%);
+      opacity: 0.85;
+    }
+
+    /* HERO DOSSIER PANEL */
+    .hero-panel {
+      position: relative;
+      background:
+        radial-gradient(circle at 18% 28%, rgba(34, 211, 238, 0.14), transparent 45%),
+        radial-gradient(circle at 84% 55%, rgba(139, 92, 246, 0.16), transparent 46%),
+        radial-gradient(circle at 60% 12%, rgba(245, 158, 11, 0.09), transparent 36%),
+        linear-gradient(135deg, #060913 0%, #0b1326 52%, #090d1a 100%);
+      border: 1.5px solid var(--border);
+      border-radius: 18px;
+      padding: 1.75rem 2.25rem 2rem;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 3rem;
+      right: 3rem;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), #6366f1, var(--pink), var(--amber));
+    }
+
+    .chrome-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.85rem;
+    }
+
+    .chrome-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .chrome-right {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .dots {
+      display: inline-flex;
+      gap: 7px;
+      margin-right: 0.35rem;
+    }
+
+    .dots span {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+
+    .dots span:nth-child(1) { background: var(--cyan); }
+    .dots span:nth-child(2) { background: var(--purple); }
+    .dots span:nth-child(3) { background: var(--amber); }
+
+    .chrome-title {
+      font-family: var(--mono);
+      font-size: 0.73rem;
+      letter-spacing: 0.16em;
+      color: var(--dim);
+      text-transform: uppercase;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.28rem 0.75rem;
+      border-radius: 999px;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--text-soft);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 10px var(--emerald);
+    }
+
+    /* EN / TR Language Switcher */
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      background: #0b1222;
+      border: 1px solid var(--border-light);
+      border-radius: 999px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .lang-btn {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.69rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.22rem 0.65rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .lang-btn:hover {
+      color: var(--text);
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(90deg, #0891b2, #6366f1);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(34, 211, 238, 0.3);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.45fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .identity-wrap {
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .multi-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .multi-bar span {
+      width: 4px;
+      border-radius: 2px;
+      display: block;
+    }
+
+    .multi-bar span:nth-child(1) { height: 56px; background: var(--cyan); }
+    .multi-bar span:nth-child(2) { height: 42px; background: var(--purple); }
+    .multi-bar span:nth-child(3) { height: 30px; background: var(--pink); }
+    .multi-bar span:nth-child(4) { height: 22px; background: var(--amber); }
+
+    .hero-name-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(34, 211, 238, 0.45);
+      box-shadow: 0 0 22px rgba(34, 211, 238, 0.15);
+    }
+
+    h1 {
+      font-size: clamp(2.1rem, 4vw, 3.15rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.08;
+      background: linear-gradient(90deg, #ffffff 0%, #e2e8f0 65%, #7dd3fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .identity-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin: 0.85rem 0 1.15rem;
+    }
+
+    .id-pill {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.25rem 0.7rem;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .id-pill:hover { transform: translateY(-1px); }
+
+    .id-pill.cyan {
+      background: #111c33;
+      color: #38bdf8;
+      border: 1px solid rgba(34, 211, 238, 0.45);
+    }
+
+    .id-pill.purple {
+      background: #16132b;
+      color: #c4b5fd;
+      border: 1px solid rgba(139, 92, 246, 0.45);
+    }
+
+    .id-pill.emerald {
+      background: #0c2622;
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.45);
+    }
+
+    .id-pill.amber {
+      background: #1c1520;
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.42);
+    }
+
+    .hero-headline {
+      font-size: 1.12rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-summary {
+      font-size: 0.92rem;
+      color: var(--muted);
+      max-width: 620px;
+    }
+
+    .telemetry-card {
+      position: relative;
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.92), rgba(9, 15, 29, 0.96));
+      border: 1.2px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.25rem;
+    }
+
+    .telemetry-bars {
+      position: absolute;
+      top: 0;
+      left: 18px;
+      display: flex;
+      gap: 4px;
+    }
+
+    .telemetry-bars span { height: 2px; display: block; }
+    .telemetry-bars span:nth-child(1) { width: 88px; background: var(--cyan); }
+    .telemetry-bars span:nth-child(2) { width: 58px; background: var(--purple); }
+    .telemetry-bars span:nth-child(3) { width: 38px; background: var(--pink); }
+
+    .telemetry-header {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      color: var(--dim);
+      padding-bottom: 0.55rem;
+      margin-bottom: 0.65rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .telemetry-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .telemetry-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+    .telemetry-label {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    .telemetry-label i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .telemetry-tech {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+    }
+
+    .domain-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.75rem;
+      margin-top: 1.75rem;
+    }
+
+    .domain-pill {
+      padding: 0.6rem 0.9rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .domain-pill .code {
+      font-family: var(--mono);
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    .domain-pill .sub {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-soft);
+    }
+
+    .dp-1 { background: #0b1629; border-color: rgba(34, 211, 238, 0.38); }
+    .dp-1 .code { color: var(--cyan); }
+    .dp-2 { background: #131129; border-color: rgba(168, 85, 247, 0.38); }
+    .dp-2 .code { color: #c084fc; }
+    .dp-3 { background: #1f1124; border-color: rgba(236, 72, 153, 0.38); }
+    .dp-3 .code { color: #f472b6; }
+    .dp-4 { background: #1f1710; border-color: rgba(245, 158, 11, 0.38); }
+    .dp-4 .code { color: #fbbf24; }
+    .dp-5 { background: #0b1f1d; border-color: rgba(16, 185, 129, 0.38); }
+    .dp-5 .code { color: #34d399; }
+
+    /* QUICK ACTION BAR */
+    .action-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+
+    .action-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 6px;
+      overflow: hidden;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .action-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .action-badge .k {
+      background: #0b1324;
+      color: #cbd5e1;
+      padding: 0.45rem 0.75rem;
+    }
+
+    .action-badge .v {
+      padding: 0.45rem 0.85rem;
+      color: #ffffff;
+    }
+
+    /* ARCHITECTURE & DISCIPLINES PANEL */
+    .section-panel {
+      background: linear-gradient(135deg, #080d1a 0%, #0b1324 100%);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem 1.75rem 1.75rem;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: var(--dim);
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .pillar-card {
+      position: relative;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 1.2rem 1.15rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .pillar-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .pillar-1 { background: #0d1629; }
+    .pillar-1::before { background: linear-gradient(90deg, #22d3ee, #3b82f6); }
+    .pillar-2 { background: #131127; }
+    .pillar-2::before { background: linear-gradient(90deg, #a855f7, #ec4899); }
+    .pillar-3 { background: #1a1219; }
+    .pillar-3::before { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+    .pillar-4 { background: #0b1a1e; }
+    .pillar-4::before { background: linear-gradient(90deg, #10b981, #06b6d4); }
+
+    .pillar-chip {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.15rem 0.55rem;
+      border-radius: 5px;
+      margin-bottom: 0.75rem;
+      width: fit-content;
+    }
+
+    .pillar-1 .pillar-chip { background: #0c2a3a; color: #22d3ee; border: 1px solid rgba(34, 211, 238, 0.4); }
+    .pillar-2 .pillar-chip { background: #261338; color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .pillar-3 .pillar-chip { background: #331a12; color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .pillar-4 .pillar-chip { background: #0c2e28; color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+    .pillar-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 0.45rem;
+    }
+
+    .pillar-card p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .pillar-foot {
+      font-family: var(--mono);
+      font-size: 0.71rem;
+      font-weight: 600;
+    }
+
+    .pillar-1 .pillar-foot { color: #38bdf8; }
+    .pillar-2 .pillar-foot { color: #e879f9; }
+    .pillar-3 .pillar-foot { color: #fbbf24; }
+    .pillar-4 .pillar-foot { color: #34d399; }
+
+    /* FLAGSHIP CARDS */
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-heading h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: #f8fafc;
+    }
+
+    .sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+      background: #0d1628;
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .sync-badge i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.15rem;
+      align-items: start;
+    }
+
+    .project-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 196px;
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      padding: 1.25rem 1.5rem 1.05rem;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .project-card.is-expanded {
+      height: auto;
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-light);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--c1), var(--c2));
+    }
+
+    .project-card::after {
+      content: "";
+      position: absolute;
+      top: 26px;
+      bottom: 26px;
+      left: 0;
+      width: 3.5px;
+      border-radius: 2px;
+      background: linear-gradient(180deg, var(--c1), var(--c2));
+    }
+
+    .pc-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .pc-tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--pill-text);
+    }
+
+    .pc-badge {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      background: var(--pill-bg);
+      color: var(--pill-text);
+      border: 1px solid var(--c1);
+      white-space: nowrap;
+    }
+
+    .project-card h3 {
+      font-size: 1.16rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 0.45rem;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .project-card.is-expanded h3 {
+      white-space: normal;
+      overflow: visible;
+    }
+
+    .pc-desc-wrap {
+      margin-bottom: 0.95rem;
+    }
+
+    .pc-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 2.62rem;
+      word-break: break-word;
+    }
+
+    .project-card.is-expanded .pc-desc {
+      display: block;
+      -webkit-line-clamp: unset;
+      overflow: visible;
+      white-space: pre-line;
+      max-height: 340px;
+      overflow-y: auto;
+      padding-right: 0.4rem;
+      margin-top: 0.25rem;
+    }
+
+    .project-card.is-expanded .pc-desc::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .project-card.is-expanded .pc-desc::-webkit-scrollbar-thumb {
+      background: var(--border-light);
+      border-radius: 4px;
+    }
+
+    .pc-toggle {
+      appearance: none;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      background: rgba(15, 23, 42, 0.85);
+      color: var(--pill-text);
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 0.18rem 0.55rem;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .pc-toggle:hover {
+      background: var(--pill-bg);
+      border-color: var(--c1);
+    }
+
+    .pc-foot-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .pc-foot-stack {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pc-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.71rem;
+      color: var(--text-soft);
+    }
+
+    .pc-open {
+      color: var(--pill-text);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .pal-0 {
+      --c1: #a855f7; --c2: #ec4899; --pill-bg: #241238; --pill-text: #e879f9;
+      background: radial-gradient(circle at 90% 10%, rgba(168, 85, 247, 0.18), transparent 55%), #110d22;
+    }
+    .pal-1 {
+      --c1: #22d3ee; --c2: #3b82f6; --pill-bg: #0c2a3d; --pill-text: #38bdf8;
+      background: radial-gradient(circle at 90% 10%, rgba(34, 211, 238, 0.18), transparent 55%), #0a1526;
+    }
+    .pal-2 {
+      --c1: #f59e0b; --c2: #ef4444; --pill-bg: #331a12; --pill-text: #fbbf24;
+      background: radial-gradient(circle at 90% 10%, rgba(245, 158, 11, 0.18), transparent 55%), #191118;
+    }
+    .pal-3 {
+      --c1: #38bdf8; --c2: #818cf8; --pill-bg: #17203d; --pill-text: #93c5fd;
+      background: radial-gradient(circle at 90% 10%, rgba(56, 189, 248, 0.18), transparent 55%), #0d1426;
+    }
+    .pal-4 {
+      --c1: #10b981; --c2: #06b6d4; --pill-bg: #0c2e28; --pill-text: #34d399;
+      background: radial-gradient(circle at 90% 10%, rgba(16, 185, 129, 0.18), transparent 55%), #091b1d;
+    }
+    .pal-5 {
+      --c1: #f43f5e; --c2: #a855f7; --pill-bg: #2f1329; --pill-text: #fb7185;
+      background: radial-gradient(circle at 90% 10%, rgba(244, 63, 94, 0.18), transparent 55%), #180f20;
+    }
+
+    /* TECHNICAL MATRIX PANEL */
+    .matrix-panel {
+      position: relative;
+      background: linear-gradient(135deg, #070c18 0%, #0c1527 100%);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem 1.75rem;
+      margin-top: 2.25rem;
+      overflow: hidden;
+    }
+
+    .matrix-panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 3rem;
+      right: 3rem;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cyan), #8b5cf6, var(--pink), var(--emerald));
+    }
+
+    .matrix-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .matrix-row {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .matrix-label {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+    }
+
+    .matrix-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .m-pill {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      color: #e2e8f0;
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+    }
+
+    .m-cyan { background: #0d1b30; border: 1px solid rgba(34, 211, 238, 0.4); }
+    .m-purple { background: #17132e; border: 1px solid rgba(168, 85, 247, 0.4); }
+    .m-amber { background: #231812; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .m-emerald { background: #0b2220; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+    footer {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+      padding-top: 0.5rem;
+    }
+
+    footer a {
+      color: var(--text-soft);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    footer a:hover { color: var(--cyan); }
+
+    @media (max-width: 980px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .domain-strip { grid-template-columns: repeat(2, 1fr); }
+      .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+      .cards-grid { grid-template-columns: 1fr; }
+      .matrix-row { grid-template-columns: 1fr; gap: 0.4rem; }
+    }
+
+    @media (max-width: 560px) {
+      .hero-panel { padding: 1.35rem 1.15rem; }
+      .domain-strip { grid-template-columns: 1fr; }
+      .pillars-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- HERO DOSSIER -->
+    <header class="hero-panel">
+      <div class="chrome-bar">
+        <div class="chrome-left">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span class="chrome-title" data-i18n="chrome_title">MRC CORPS // ENGINEERING DOSSIER · REV 2026.11</span>
+        </div>
+        <div class="chrome-right">
+          <div class="status-pill">
+            <span class="status-dot"></span>
+            <span data-i18n="status_online">SYSTEMS ONLINE</span>
+          </div>
+          <div class="lang-switch" role="group" aria-label="Language switcher">
+            <button type="button" class="lang-btn active" data-lang="en">EN</button>
+            <button type="button" class="lang-btn" data-lang="tr">TR</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-grid">
+        <div class="identity-wrap">
+          <div class="multi-bar"><span></span><span></span><span></span><span></span></div>
+          <div>
+            <div class="hero-name-row">
+              <img id="avatar" class="avatar" src="https://github.com/lepotane.png?size=160" alt="Samet Muriç (@lepotane)" />
+              <h1>SAMET MURIÇ</h1>
+            </div>
+
+            <div class="identity-pills">
+              <a class="id-pill cyan" href="https://github.com/lepotane" target="_blank" rel="noopener">@lepotane</a>
+              <a class="id-pill purple" href="https://mrccorps.is-a.dev">mrccorps.is-a.dev</a>
+              <a class="id-pill emerald" href="https://lepotane.github.io/mrc-site/" target="_blank" rel="noopener" data-i18n="pill_portal">MRC CloudStream Site ↗</a>
+              <a class="id-pill amber" href="https://github.com/mrc-tuner-studio" target="_blank" rel="noopener" data-i18n="pill_founder">Founder · MRC Studio</a>
+            </div>
+
+            <p class="hero-headline" data-i18n="hero_headline">
+              Systems Architect, AI Inference Engineer &amp; Full-Stack Product Builder
+            </p>
+            <p class="hero-summary" data-i18n="hero_summary">
+              From GPU memory streaming &amp; binary ECU calibration workstations to enterprise SaaS,
+              automotive protocol decoders, media ecosystems and custom hardware interfaces.
+            </p>
+          </div>
+        </div>
+
+        <aside class="telemetry-card" aria-label="Active Domains Spectrum">
+          <div class="telemetry-bars"><span></span><span></span><span></span></div>
+          <div class="telemetry-header" data-i18n="telemetry_header">ACTIVE DOMAINS // SPECTRUM</div>
+          <ul class="telemetry-list">
+            <li class="telemetry-row">
+              <span class="telemetry-label"><i style="background:#22d3ee"></i><span data-i18n="tel_1">LLM Inference &amp; GPU Memory</span></span>
+              <span class="telemetry-tech" style="color:#38bdf8">C++ · CUDA · PCIe DMA</span>
+            </li>
+            <li class="telemetry-row">
+              <span class="telemetry-label"><i style="background:#a855f7"></i><span data-i18n="tel_2">Binary &amp; ECU Calibration</span></span>
+              <span class="telemetry-tech" style="color:#c084fc">MRC Tuner Studio</span>
+            </li>
+            <li class="telemetry-row">
+              <span class="telemetry-label"><i style="background:#ec4899"></i><span data-i18n="tel_3">Enterprise SaaS &amp; Desktop</span></span>
+              <span class="telemetry-tech" style="color:#f472b6">Laravel · Vue · Tauri</span>
+            </li>
+            <li class="telemetry-row">
+              <span class="telemetry-label"><i style="background:#f59e0b"></i><span data-i18n="tel_4">Automotive Protocols &amp; HIL</span></span>
+              <span class="telemetry-tech" style="color:#fbbf24">UDS · CAN · VAG ABS</span>
+            </li>
+            <li class="telemetry-row">
+              <span class="telemetry-label"><i style="background:#10b981"></i><span data-i18n="tel_5">Agent Tooling &amp; Streaming</span></span>
+              <span class="telemetry-tech" style="color:#34d399">Python · Kotlin · CI</span>
+            </li>
+          </ul>
+        </aside>
+      </div>
+
+      <div class="domain-strip">
+        <div class="domain-pill dp-1">
+          <span class="code" data-i18n="dp1_code">01 // AI RUNTIME</span>
+          <span class="sub" data-i18n="dp1_sub">KV Cache Streaming · Q4_0</span>
+        </div>
+        <div class="domain-pill dp-2">
+          <span class="code" data-i18n="dp2_code">02 // BINARY &amp; ECU</span>
+          <span class="sub" data-i18n="dp2_sub">ROM Maps · Calibration UI</span>
+        </div>
+        <div class="domain-pill dp-3">
+          <span class="code" data-i18n="dp3_code">03 // SAAS &amp; DESKTOP</span>
+          <span class="sub" data-i18n="dp3_sub">CRM / ERP · Multi-Tenant</span>
+        </div>
+        <div class="domain-pill dp-4">
+          <span class="code" data-i18n="dp4_code">04 // AUTOMOTIVE</span>
+          <span class="sub" data-i18n="dp4_sub">13 VAG Families · Telemetry</span>
+        </div>
+        <div class="domain-pill dp-5">
+          <span class="code" data-i18n="dp5_code">05 // ECOSYSTEMS</span>
+          <span class="sub" data-i18n="dp5_sub">MRC Builds · Agent Safety</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ACTION BADGES -->
+    <nav class="action-bar" aria-label="Primary links">
+      <a class="action-badge" href="https://github.com/lepotane" target="_blank" rel="noopener">
+        <span class="k">GITHUB</span>
+        <span class="v" style="background:#0891b2">@lepotane</span>
+      </a>
+      <a class="action-badge" href="https://lepotane.github.io/mrc-site/" target="_blank" rel="noopener">
+        <span class="k" data-i18n="act_portal_k">CLOUDSTREAM PORTAL</span>
+        <span class="v" style="background:#10b981">mrc-site ↗</span>
+      </a>
+      <a class="action-badge" href="https://github.com/mrc-tuner-studio" target="_blank" rel="noopener">
+        <span class="k" data-i18n="act_org_k">ORGANIZATION</span>
+        <span class="v" style="background:#7c3aed">MRC Tuner Studio</span>
+      </a>
+      <a class="action-badge" href="https://github.com/lepotane?tab=repositories" target="_blank" rel="noopener">
+        <span class="k" data-i18n="act_repos_k">REPOSITORIES</span>
+        <span class="v" style="background:#d97706" data-i18n="act_repos_v">Open Source Index</span>
+      </a>
+      <a class="action-badge" href="mailto:smtmrc@gmail.com">
+        <span class="k" data-i18n="act_contact_k">CONTACT</span>
+        <span class="v" style="background:#059669">smtmrc@gmail.com</span>
+      </a>
+    </nav>
+
+    <!-- ARCHITECTURE & DISCIPLINES -->
+    <section class="section-panel" aria-label="Architecture and Disciplines">
+      <div class="panel-head">
+        <span data-i18n="arch_head_left">ARCHITECTURE &amp; DISCIPLINES // MULTI-DOMAIN STACK</span>
+        <span data-i18n="arch_head_right">4 CORE PILLARS</span>
+      </div>
+
+      <div class="pillars-grid">
+        <article class="pillar-card pillar-1">
+          <div>
+            <span class="pillar-chip" data-i18n="p1_chip">AI / HPC</span>
+            <h3 data-i18n="p1_title">LLM Runtimes &amp; Agents</h3>
+            <p data-i18n="p1_desc">Host-RAM KV cache streaming, async double-buffered PCIe DMA, Q4_0 quantization &amp; safe autonomous agent execution layers.</p>
+          </div>
+          <div class="pillar-foot">C++ · CUDA · Python · Strata</div>
+        </article>
+
+        <article class="pillar-card pillar-2">
+          <div>
+            <span class="pillar-chip" data-i18n="p2_chip">BINARY</span>
+            <h3 data-i18n="p2_title">ECU &amp; Vehicle Systems</h3>
+            <p data-i18n="p2_desc">AI-assisted ECU calibration &amp; ROM binary editing (MRC Tuner Studio), VAG ABS/ESP long-coding synthesis &amp; high-rate CAN/OBD-II telemetry.</p>
+          </div>
+          <div class="pillar-foot">HEX/ROM · UDS · CAN · ESP32</div>
+        </article>
+
+        <article class="pillar-card pillar-3">
+          <div>
+            <span class="pillar-chip" data-i18n="p3_chip">PRODUCT</span>
+            <h3 data-i18n="p3_title">Full-Stack &amp; Desktop Apps</h3>
+            <p data-i18n="p3_desc">Multi-tenant CRM/ERP SaaS suites, cross-platform Tauri desktop shells, reactive web interfaces and companion hardware control surfaces.</p>
+          </div>
+          <div class="pillar-foot">Laravel · Vue · Tauri · TypeScript</div>
+        </article>
+
+        <article class="pillar-card pillar-4">
+          <div>
+            <span class="pillar-chip" data-i18n="p4_chip">INFRA</span>
+            <h3 data-i18n="p4_title">Media &amp; Cloud Automation</h3>
+            <p data-i18n="p4_desc">Large-scale plugin ecosystems with autonomous CI/CD pipelines, edge workers, zero-touch release distribution &amp; self-healing builds.</p>
+          </div>
+          <div class="pillar-foot">Kotlin · Actions · AWS · Cloudflare</div>
+        </article>
+      </div>
+    </section>
+
+    <div class="spectrum-divider"></div>
+
+    <!-- FLAGSHIP PROJECTS (DYNAMICALLY SYNCED FROM GITHUB API, NO COUNT LIMIT) -->
+    <section aria-labelledby="flagship-title">
+      <div class="section-heading">
+        <h2 id="flagship-title" data-i18n="flagship_title">Flagship Engineering &amp; Systems</h2>
+        <span id="repo-count" class="sync-badge"><i></i><span>LIVE GITHUB SYNC</span></span>
+      </div>
+
+      <div id="cards-grid" class="cards-grid"></div>
+    </section>
+
+    <!-- TECHNICAL MATRIX -->
+    <section class="matrix-panel" aria-label="Technical Matrix">
+      <div class="panel-head">
+        <span data-i18n="matrix_head_left">TECHNICAL MATRIX // LANGUAGES, RUNTIMES &amp; INFRASTRUCTURE</span>
+        <span style="color:#38bdf8" data-i18n="matrix_head_right">PRODUCTION STACK</span>
+      </div>
+
+      <div class="matrix-rows">
+        <div class="matrix-row">
+          <span class="matrix-label" style="color:#22d3ee" data-i18n="m_row_1">SYSTEMS &amp; AI</span>
+          <div class="matrix-pills">
+            <span class="m-pill m-cyan">C++ / Modern C</span>
+            <span class="m-pill m-cyan">CUDA &amp; PCIe DMA</span>
+            <span class="m-pill m-cyan">GGUF / Q4_0 / KV</span>
+            <span class="m-pill m-cyan">Python 3</span>
+            <span class="m-pill m-cyan" data-i18n="mp_tauri">Tauri / Rust Shell</span>
+            <span class="m-pill m-cyan" data-i18n="mp_agents">Agent Harnesses</span>
+          </div>
+        </div>
+
+        <div class="matrix-row">
+          <span class="matrix-label" style="color:#c084fc" data-i18n="m_row_2">WEB &amp; SAAS</span>
+          <div class="matrix-pills">
+            <span class="m-pill m-purple">PHP 8 / Laravel</span>
+            <span class="m-pill m-purple">Vue.js / Vite</span>
+            <span class="m-pill m-purple">TypeScript / ES2026</span>
+            <span class="m-pill m-purple">Kotlin / Gradle</span>
+            <span class="m-pill m-purple">MySQL / SQLite</span>
+            <span class="m-pill m-purple">REST / WebSockets</span>
+          </div>
+        </div>
+
+        <div class="matrix-row">
+          <span class="matrix-label" style="color:#fbbf24" data-i18n="m_row_3">BINARY &amp; AUTO</span>
+          <div class="matrix-pills">
+            <span class="m-pill m-amber" data-i18n="mp_ecu">ECU ROM Calibration</span>
+            <span class="m-pill m-amber">UDS / ISO 15765-4</span>
+            <span class="m-pill m-amber">CAN 2.0B / OBD-II</span>
+            <span class="m-pill m-amber" data-i18n="mp_vag">VAG Long-Coding</span>
+            <span class="m-pill m-amber">ESP32 / FreeRTOS</span>
+            <span class="m-pill m-amber" data-i18n="mp_hex">Hex / AST Diffing</span>
+          </div>
+        </div>
+
+        <div class="matrix-row">
+          <span class="matrix-label" style="color:#34d399" data-i18n="m_row_4">CLOUD &amp; OPS</span>
+          <div class="matrix-pills">
+            <span class="m-pill m-emerald">AWS (eu-north-1)</span>
+            <span class="m-pill m-emerald">Cloudflare Edge &amp; Workers</span>
+            <span class="m-pill m-emerald" data-i18n="mp_ci">GitHub Actions Autonomous CI</span>
+            <span class="m-pill m-emerald">Linux / Windows</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="spectrum-divider"></div>
+
+    <footer>
+      <strong>SAMET MURIÇ</strong> &nbsp;·&nbsp;
+      <a href="https://mrccorps.is-a.dev">mrccorps.is-a.dev</a> &nbsp;·&nbsp;
+      <a href="https://lepotane.github.io/mrc-site/" target="_blank" rel="noopener" data-i18n="foot_portal">MRC CloudStream Site</a> &nbsp;·&nbsp;
+      <a href="https://github.com/lepotane" target="_blank" rel="noopener">github.com/lepotane</a> &nbsp;·&nbsp;
+      <a href="https://github.com/mrc-tuner-studio" target="_blank" rel="noopener">MRC Tuner Studio</a> &nbsp;·&nbsp;
+      <a href="mailto:smtmrc@gmail.com">smtmrc@gmail.com</a>
+    </footer>
+
+  </div>
+
+  <script>
+    const USERNAME = "lepotane";
+    const ORGS = ["mrc-tuner-studio"];
+    const AUTHOR_EMAILS = new Set(["smtmrc@gmail.com", "lepotane@users.noreply.github.com"]);
+
+    const EXCLUDED_REPOS = new Set([
+      "lepotane",
+      "lepotane.github.io",
+      "mrccorps.is-a.dev",
+      "register"
+    ]);
+
+    const CUSTOM_LINKS = {
+      "mrc-site": "https://lepotane.github.io/mrc-site/",
+      "PolyStrata": "https://github.com/simplexai-labs/PolyStrata/pull/180",
+      "mrc-tuner-studio.github.io": "https://mrc-tuner-studio.github.io/",
+      "MRC-Tuner-Studio": "https://mrc-tuner-studio.github.io/"
+    };
+
+    const I18N = {
+      en: {
+        page_title: "Samet Muriç (@lepotane) — Systems Architect, AI Inference & Full-Stack Engineer",
+        chrome_title: "MRC CORPS // ENGINEERING DOSSIER · REV 2026.11",
+        status_online: "SYSTEMS ONLINE",
+        pill_portal: "MRC CloudStream Site ↗",
+        pill_founder: "Founder · MRC Studio",
+        hero_headline: "Systems Architect, AI Inference Engineer & Full-Stack Product Builder",
+        hero_summary: "From GPU memory streaming & binary ECU calibration workstations to enterprise SaaS, automotive protocol decoders, media ecosystems and custom hardware interfaces.",
+        telemetry_header: "ACTIVE DOMAINS // SPECTRUM",
+        tel_1: "LLM Inference & GPU Memory",
+        tel_2: "Binary & ECU Calibration",
+        tel_3: "Enterprise SaaS & Desktop",
+        tel_4: "Automotive Protocols & HIL",
+        tel_5: "Agent Tooling & Streaming",
+        dp1_code: "01 // AI RUNTIME",
+        dp1_sub: "KV Cache Streaming · Q4_0",
+        dp2_code: "02 // BINARY & ECU",
+        dp2_sub: "ROM Maps · Calibration UI",
+        dp3_code: "03 // SAAS & DESKTOP",
+        dp3_sub: "CRM / ERP · Multi-Tenant",
+        dp4_code: "04 // AUTOMOTIVE",
+        dp4_sub: "13 VAG Families · Telemetry",
+        dp5_code: "05 // ECOSYSTEMS",
+        dp5_sub: "MRC Builds · Agent Safety",
+        act_portal_k: "CLOUDSTREAM PORTAL",
+        act_org_k: "ORGANIZATION",
+        act_repos_k: "REPOSITORIES",
+        act_repos_v: "Open Source Index",
+        act_contact_k: "CONTACT",
+        arch_head_left: "ARCHITECTURE & DISCIPLINES // MULTI-DOMAIN STACK",
+        arch_head_right: "4 CORE PILLARS",
+        p1_chip: "AI / HPC",
+        p1_title: "LLM Runtimes & Agents",
+        p1_desc: "Host-RAM KV cache streaming, async double-buffered PCIe DMA, Q4_0 quantization & safe autonomous agent execution layers.",
+        p2_chip: "BINARY",
+        p2_title: "ECU & Vehicle Systems",
+        p2_desc: "AI-assisted ECU calibration & ROM binary editing (MRC Tuner Studio), VAG ABS/ESP long-coding synthesis & high-rate CAN/OBD-II telemetry.",
+        p3_chip: "PRODUCT",
+        p3_title: "Full-Stack & Desktop Apps",
+        p3_desc: "Multi-tenant CRM/ERP SaaS suites, cross-platform Tauri desktop shells, reactive web interfaces and companion hardware control surfaces.",
+        p4_chip: "INFRA",
+        p4_title: "Media & Cloud Automation",
+        p4_desc: "Large-scale plugin ecosystems with autonomous CI/CD pipelines, edge workers, zero-touch release distribution & self-healing builds.",
+        flagship_title: "Flagship Engineering & Systems",
+        matrix_head_left: "TECHNICAL MATRIX // LANGUAGES, RUNTIMES & INFRASTRUCTURE",
+        matrix_head_right: "PRODUCTION STACK",
+        m_row_1: "SYSTEMS & AI",
+        m_row_2: "WEB & SAAS",
+        m_row_3: "BINARY & AUTO",
+        m_row_4: "CLOUD & OPS",
+        mp_tauri: "Tauri / Rust Shell",
+        mp_agents: "Agent Harnesses",
+        mp_ecu: "ECU ROM Calibration",
+        mp_vag: "VAG Long-Coding",
+        mp_hex: "Hex / AST Diffing",
+        mp_ci: "GitHub Actions Autonomous CI",
+        foot_portal: "MRC CloudStream Site",
+        sync_live: "PUBLIC SYSTEMS · LIVE GITHUB SYNC",
+        sync_cached: "PUBLIC SYSTEMS · SYNCED",
+        generic_tag_suffix: "OPEN SOURCE SYSTEM",
+        generic_desc_suffix: "open-source engineering project.",
+        generic_stack_suffix: "GitHub Repository · Open Source",
+        cta_live: "LIVE SITE ↗",
+        cta_repo: "OPEN REPO ↗",
+        cta_pr: "OPEN PR ↗",
+        cta_commit: "VIEW COMMIT ↗",
+        fork_pr_prefix: "UPSTREAM PR",
+        fork_commit_prefix: "FORK CONTRIBUTION",
+        authored_by: "Authored by",
+        branch_lbl: "Branch",
+        show_more: "More ▾",
+        show_less: "Less ▴"
+      },
+      tr: {
+        page_title: "Samet Muriç (@lepotane) — Sistem Mimarı, Yapay Zeka Çıkarım & Full-Stack Mühendisi",
+        chrome_title: "MRC CORPS // MÜHENDİSLİK DOSYASI · REV 2026.11",
+        status_online: "SİSTEMLER AKTİF",
+        pill_portal: "MRC CloudStream Sitesi ↗",
+        pill_founder: "Kurucu · MRC Studio",
+        hero_headline: "Sistem Mimarı, Yapay Zeka Çıkarım Mühendisi & Full-Stack Ürün Geliştirici",
+        hero_summary: "GPU bellek akışı (KV streaming) ve binary ECU kalibrasyon iş istasyonlarından kurumsal SaaS platformlarına, otomotiv protokol çözücülere, medya ekosistemlerine ve özel donanım arayüzlerine uzanan mühendislik çözümleri.",
+        telemetry_header: "AKTİF UZMANLIK ALANLARI // SPEKTRUM",
+        tel_1: "LLM Çıkarım & GPU Bellek Mimarisi",
+        tel_2: "Binary & ECU Kalibrasyon",
+        tel_3: "Kurumsal SaaS & Masaüstü",
+        tel_4: "Otomotiv Protokolleri & Telemetri",
+        tel_5: "Otonom Ajan & Medya Sistemleri",
+        dp1_code: "01 // YAPAY ZEKA",
+        dp1_sub: "KV Bellek Akışı · Q4_0",
+        dp2_code: "02 // BINARY & ECU",
+        dp2_sub: "ROM Haritaları · Kalibrasyon",
+        dp3_code: "03 // SAAS & MASAÜSTÜ",
+        dp3_sub: "CRM / ERP · Çoklu Kiracı",
+        dp4_code: "04 // OTOMOTİV",
+        dp4_sub: "13 VAG Ailesi · Telemetri",
+        dp5_code: "05 // EKOSİSTEMLER",
+        dp5_sub: "MRC Builds · Ajan Güvenliği",
+        act_portal_k: "CLOUDSTREAM PORTALI",
+        act_org_k: "ORGANİZASYON",
+        act_repos_k: "DEPOLAR",
+        act_repos_v: "Açık Kaynak Dizini",
+        act_contact_k: "İLETİŞİM",
+        arch_head_left: "MİMARİ & DİSİPLİNLER // ÇOK KATMANLI TEKNOLOJİ YIĞINI",
+        arch_head_right: "4 ANA SÜTUN",
+        p1_chip: "YZ / HPC",
+        p1_title: "LLM Motorları & Ajanlar",
+        p1_desc: "Host-RAM KV önbellek akışı, çift tamponlu asenkron PCIe DMA, Q4_0 sıkıştırma ve otonom kodlama ajanları için güvenli yürütme katmanları.",
+        p2_chip: "BINARY",
+        p2_title: "ECU & Araç Sistemleri",
+        p2_desc: "Yapay zeka destekli ECU kalibrasyon ve ROM binary düzenleme iş istasyonu (MRC Tuner Studio), VAG ABS/ESP uzun kodlama sentezi ve CAN/OBD-II telemetri.",
+        p3_chip: "ÜRÜN",
+        p3_title: "Full-Stack & Masaüstü",
+        p3_desc: "Çok kiracılı (multi-tenant) CRM/ERP SaaS sistemleri, çapraz platform Tauri masaüstü kabukları, reaktif web arayüzleri ve donanım kontrol yüzeyleri.",
+        p4_chip: "ALTYAPI",
+        p4_title: "Medya & Bulut Otomasyonu",
+        p4_desc: "Otonom CI/CD boru hatları, uç (edge) servisler, sıfır dokunuşlu sürüm dağıtımı ve kendi kendini onaran derleme sistemleriyle geniş ölçekli eklenti ekosistemleri.",
+        flagship_title: "Öne Çıkan Mühendislik Projeleri & Sistemler",
+        matrix_head_left: "TEKNİK MATRİS // DİLLER, ÇALIŞMA ZAMANLARI & ALTYAPI",
+        matrix_head_right: "ÜRETİM YIĞINI",
+        m_row_1: "SİSTEM & YZ",
+        m_row_2: "WEB & SAAS",
+        m_row_3: "BINARY & OTO",
+        m_row_4: "BULUT & OPS",
+        mp_tauri: "Tauri / Rust Kabuğu",
+        mp_agents: "Ajan Altyapıları",
+        mp_ecu: "ECU ROM Kalibrasyonu",
+        mp_vag: "VAG Uzun Kodlama",
+        mp_hex: "Hex / AST Karşılaştırma",
+        mp_ci: "GitHub Actions Otonom CI",
+        foot_portal: "MRC CloudStream Sitesi",
+        sync_live: "AÇIK SİSTEM · CANLI GITHUB SENKRON",
+        sync_cached: "AÇIK SİSTEM · SENKRONİZE",
+        generic_tag_suffix: "AÇIK KAYNAK SİSTEM",
+        generic_desc_suffix: "açık kaynak mühendislik projesi.",
+        generic_stack_suffix: "GitHub Deposu · Açık Kaynak",
+        cta_live: "CANLI SİTE ↗",
+        cta_repo: "DEPOYU AÇ ↗",
+        cta_pr: "PR'I AÇ ↗",
+        cta_commit: "COMMIT'İ GÖR ↗",
+        fork_pr_prefix: "UPSTREAM PR",
+        fork_commit_prefix: "FORK KATKISI",
+        authored_by: "Geliştiren:",
+        branch_lbl: "Dal",
+        show_more: "Daha fazla göster ▾",
+        show_less: "Daha az göster ▴"
+      }
+    };
+
+    const KNOWN_OVERRIDES = {
+      "mrc-tuner-studio.github.io": {
+        priority: 100,
+        en: {
+          tag: "FLAGSHIP // AUTOMOTIVE & AI",
+          badge: "WORKSTATION",
+          title: "MRC Tuner Studio",
+          desc: "AI-assisted ECU calibration and binary ROM editing workstation with map recognition, hex diffing & trilingual manual (TR/EN/ZH).",
+          stack: "Binary Analysis · ECU Maps · AI Assistance · TR/EN/ZH",
+          cta: "LIVE SITE ↗"
+        },
+        tr: {
+          tag: "AMİRAL GEMİSİ // OTOMOTİV & YZ",
+          badge: "İŞ İSTASYONU",
+          title: "MRC Tuner Studio",
+          desc: "Harita tanıma, hex karşılaştırma ve üç dilli (TR/EN/ZH) kullanım kılavuzuna sahip yapay zeka destekli ECU kalibrasyon ve binary ROM düzenleme iş istasyonu.",
+          stack: "Binary Analizi · ECU Haritaları · YZ Desteği · TR/EN/ZH",
+          cta: "CANLI SİTE ↗"
+        }
+      },
+      "MRC-Tuner-Studio": {
+        priority: 99,
+        en: {
+          tag: "FLAGSHIP // AUTOMOTIVE & AI",
+          badge: "WORKSTATION",
+          title: "MRC Tuner Studio — Core Engine",
+          desc: "AI-assisted ECU calibration and binary ROM editing workstation with map recognition, hex diffing & trilingual manual (TR/EN/ZH).",
+          stack: "C++ · Binary Analysis · ECU Maps · AI Assistance",
+          cta: "OPEN REPO ↗"
+        },
+        tr: {
+          tag: "AMİRAL GEMİSİ // OTOMOTİV & YZ",
+          badge: "İŞ İSTASYONU",
+          title: "MRC Tuner Studio — Çekirdek Motor",
+          desc: "Harita tanıma, hex karşılaştırma ve üç dilli (TR/EN/ZH) kılavuza sahip yapay zeka destekli ECU kalibrasyon ve binary ROM düzenleme iş istasyonu.",
+          stack: "C++ · Binary Analizi · ECU Haritaları · YZ Desteği",
+          cta: "DEPOYU AÇ ↗"
+        }
+      },
+      "mrc-crm-erp-saas-system": {
+        priority: 90,
+        en: {
+          tag: "ENTERPRISE SAAS // DESKTOP SHELL",
+          badge: "FULL-STACK",
+          title: "MRC CRM & ERP SaaS Platform",
+          desc: "Multi-tenant enterprise resource & customer management suite pairing a Laravel + Vue reactive core with a native Tauri desktop runtime.",
+          stack: "PHP / Laravel · Vue.js · Tauri (Rust) · REST API",
+          cta: "OPEN REPO ↗"
+        },
+        tr: {
+          tag: "KURUMSAL SAAS // MASAÜSTÜ KABUĞU",
+          badge: "FULL-STACK",
+          title: "MRC CRM & ERP SaaS Platformu",
+          desc: "Laravel + Vue reaktif çekirdeğini yerleşik (native) Tauri masaüstü çalışma zamanıyla birleştiren çok kiracılı kurumsal kaynak ve müşteri yönetim paketi.",
+          stack: "PHP / Laravel · Vue.js · Tauri (Rust) · REST API",
+          cta: "DEPOYU AÇ ↗"
+        }
+      },
+      "VAG-ABS-Coding-Calculator": {
+        priority: 85,
+        en: {
+          tag: "AUTOMOTIVE PROTOCOLS // DECODER",
+          badge: "326 RECORDS",
+          title: "VAG ABS / ESP Long-Coding Engine",
+          desc: "Deterministic long-coding decoder and byte synthesizer across 13 VAG brake control module families (MK60EC1, MK100, Bosch 8.2/9.0).",
+          stack: "JavaScript · Bitwise Protocol Synthesis · VIN Matrix",
+          cta: "OPEN REPO ↗"
+        },
+        tr: {
+          tag: "OTOMOTİV PROTOKOLLERİ // KOD ÇÖZÜCÜ",
+          badge: "326 ARAÇ KAYDI",
+          title: "VAG ABS / ESP Uzun Kodlama Motoru",
+          desc: "13 VAG fren kontrol modülü ailesi (MK60EC1, MK100, Bosch 8.2/9.0) ve 326 doğrulanmış araç kaydı üzerinde çalışan deterministik uzun kodlama çözücü ve üretici.",
+          stack: "JavaScript · Bit Düzeyi Protokol Sentezi · Şasi (VIN) Matrisi",
+          cta: "DEPOYU AÇ ↗"
+        }
+      },
+      "MRC-builds": {
+        priority: 80,
+        en: {
+          tag: "MEDIA ECOSYSTEM // AUTONOMOUS CI",
+          badge: "CLOUDSTREAM",
+          title: "MRC CloudStream Plugin Ecosystem",
+          desc: "High-availability Turkish movie, series & anime plugin repository (.cs3) with automated GitHub Actions build & QA pipelines.",
+          stack: "Kotlin / Gradle · GitHub Actions · Automated QA",
+          cta: "OPEN REPO ↗"
+        },
+        tr: {
+          tag: "MEDYA EKOSİSTEMİ // OTONOM CI",
+          badge: "CLOUDSTREAM",
+          title: "MRC CloudStream Eklenti Ekosistemi",
+          desc: "Otonom GitHub Actions derleme ve kalite kontrol (QA) boru hatlarıyla yönetilen yüksek erişilebilirlikli Türkçe film, dizi ve anime eklenti deposu (.cs3).",
+          stack: "Kotlin / Gradle · GitHub Actions · Otonom Test",
+          cta: "DEPOYU AÇ ↗"
+        }
+      },
+      "mrc-site": {
+        priority: 78,
+        en: {
+          tag: "WEB PORTAL // LIVE DEPLOYMENT",
+          badge: "LIVE SITE",
+          title: "MRC CloudStream Release & Guide Portal",
+          desc: "Official web portal, installation guide and real-time repository announcement site for the MRC CloudStream plugin ecosystem.",
+          stack: "HTML5 / CSS3 · Direct Live Site · GitHub Pages",
+          cta: "VISIT SITE ↗"
+        },
+        tr: {
+          tag: "WEB PORTALI // CANLI YAYIN",
+          badge: "CANLI SİTE",
+          title: "MRC CloudStream Tanıtım & Kurulum Portalı",
+          desc: "MRC CloudStream eklenti ekosistemi için resmi tanıtım, tek tıkla kurulum rehberi ve anlık sürüm/bildirim web sitesi.",
+          stack: "HTML5 / CSS3 · Doğrudan Canlı Site · GitHub Pages",
+          cta: "SİTEYİ AÇ ↗"
+        }
+      },
+      "T-CAN485-CANLogger": {
+        priority: 75,
+        en: {
+          tag: "VEHICLE TELEMETRY // CAN & OBD-II",
+          badge: "SIM271KE ECU",
+          title: "W204 SIM271KE Twincharger CANLogger",
+          desc: "Ultra-detailed CAN / OBD-II data logger for Mercedes W204 C180K 1.6 ML Kompressor cold-start misfire diagnostics on LilyGO T-CAN485.",
+          stack: "C++ · CAN 2.0B / OBD-II · SIM271KE · ESP32",
+          cta: "OPEN REPO ↗"
+        },
+        tr: {
+          tag: "ARAÇ TELEMETRİSİ // CAN & OBD-II",
+          badge: "SIM271KE ECU",
+          title: "W204 SIM271KE Twincharger CAN Kaydedici",
+          desc: "Mercedes W204 C180K 1.6 ML Kompressor (SIM271KE) soğuk çalıştırma tekleme (misfire) teşhisi için LilyGO T-CAN485 üzerinde yüksek hızlı CAN / OBD-II veri kaydedici.",
+          stack: "C++ · CAN 2.0B / OBD-II · SIM271KE · ESP32",
+          cta: "DEPOYU AÇ ↗"
+        }
+      },
+      "gemini-bypass-permission": {
+        priority: 72,
+        en: {
+          tag: "AI AGENT INFRASTRUCTURE // SAFETY",
+          badge: "AGENT GUARD",
+          title: "Autonomous Agent File-Write Guard",
+          desc: "Transactional file-editing layer for AI coding agents — snapshots every write, validates syntax and rolls back automatically.",
+          stack: "Python · Transactional Rollback · Agent Harness",
+          cta: "OPEN REPO ↗"
+        },
+        tr: {
+          tag: "YZ AJAN ALTYAPISI // GÜVENLİK",
+          badge: "AJAN KORUMASI",
+          title: "Otonom Kodlama Ajanları İçin Dosya Koruması",
+          desc: "Yapay zeka kodlama ajanları için işlemsel (transactional) dosya yazma katmanı — her değişikliği yedekler, doğrular ve hata durumunda otomatik geri alır.",
+          stack: "Python · Otomatik Geri Alma (Rollback) · Ajan Altyapısı",
+          cta: "DEPOYU AÇ ↗"
+        }
+      }
+    };
+
+    const FALLBACK_REPOS = [
+      { name: "mrc-tuner-studio.github.io", html_url: "https://github.com/mrc-tuner-studio/mrc-tuner-studio.github.io", language: "HTML", stargazers_count: 0, pushed_at: "2026-11-20T00:00:00Z" },
+      {
+        name: "PolyStrata",
+        html_url: "https://github.com/lepotane/PolyStrata",
+        language: "C++",
+        stargazers_count: 0,
+        pushed_at: "2026-11-18T00:00:00Z",
+        _forkContrib: {
+          prNum: 180,
+          sha: "c3d92d0",
+          branch: "kv-resident-poly",
+          shortTitle: "strata-poly: --kv-resident N (KV streaming for long contexts)",
+          descEn: "This update provides true Host RAM KV cache streaming with async double-buffered PCIe DMA and full Q4_0 KV cache compression for long contexts.",
+          descTr: "Uzun bağlamlı büyük dil modelleri için çift tamponlu asenkron PCIe DMA ve tam Q4_0 KV önbellek sıkıştırması ile gerçek Host-RAM KV akışı (--kv-resident) sağlar.",
+          url: "https://github.com/simplexai-labs/PolyStrata/pull/180",
+          isPr: true,
+          priority: 95
+        }
+      },
+      { name: "mrc-crm-erp-saas-system", html_url: "https://github.com/lepotane/mrc-crm-erp-saas-system", language: "PHP", stargazers_count: 0, pushed_at: "2026-11-15T00:00:00Z" },
+      { name: "VAG-ABS-Coding-Calculator", html_url: "https://github.com/lepotane/VAG-ABS-Coding-Calculator", language: "JavaScript", stargazers_count: 1, pushed_at: "2026-11-14T00:00:00Z" },
+      { name: "MRC-builds", html_url: "https://github.com/lepotane/MRC-builds", language: "Kotlin", stargazers_count: 16, pushed_at: "2026-11-22T00:00:00Z" },
+      { name: "mrc-site", html_url: "https://github.com/lepotane/mrc-site", language: "HTML", stargazers_count: 1, pushed_at: "2026-11-12T00:00:00Z" },
+      { name: "T-CAN485-CANLogger", html_url: "https://github.com/lepotane/T-CAN485-CANLogger", language: "C++", stargazers_count: 0, pushed_at: "2026-11-10T00:00:00Z" },
+      { name: "gemini-bypass-permission", html_url: "https://github.com/lepotane/gemini-bypass-permission", language: "Python", stargazers_count: 0, pushed_at: "2026-11-08T00:00:00Z" }
+    ];
+
+    let currentLang = "en";
+    let currentRepos = FALLBACK_REPOS;
+    let isLiveSynced = false;
+
+    function detectInitialLanguage() {
+      const params = new URLSearchParams(window.location.search);
+      const qLang = (params.get("lang") || "").toLowerCase();
+      if (qLang === "tr" || qLang === "en") return qLang;
+      try {
+        const saved = localStorage.getItem("mrccorps_lang");
+        if (saved === "tr" || saved === "en") return saved;
+      } catch (_) {}
+      return "en";
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function resolveTargetUrl(repo) {
+      if (repo._forkContrib && repo._forkContrib.url) return repo._forkContrib.url;
+      const name = repo.name;
+      if (CUSTOM_LINKS[name]) return CUSTOM_LINKS[name];
+      if (repo.homepage && repo.homepage.trim().startsWith("http")) return repo.homepage.trim();
+      if (repo.has_pages && repo.owner && repo.owner.login === USERNAME) {
+        return `https://${USERNAME}.github.io/${name}/`;
+      }
+      return repo.html_url;
+    }
+
+    function isAuthoredByUser(commitObj) {
+      if (!commitObj) return false;
+      const login = (commitObj.author && commitObj.author.login || "").toLowerCase();
+      if (login === USERNAME.toLowerCase()) return true;
+      const ca = (commitObj.commit && commitObj.commit.author) || {};
+      const name = (ca.name || "").toLowerCase();
+      const email = (ca.email || "").toLowerCase();
+      return name === USERNAME.toLowerCase() || AUTHOR_EMAILS.has(email) || email.includes(USERNAME.toLowerCase());
+    }
+
+    async function inspectForkContribution(repo, prsByRepo) {
+      const name = repo.name;
+      const owner = (repo.owner && repo.owner.login) || USERNAME;
+      const pr = prsByRepo.get(name.toLowerCase());
+      let latestCommit = null;
+
+      try {
+        const brRes = await fetch(`https://api.github.com/repos/${owner}/${name}/branches?per_page=100`);
+        if (brRes.ok) {
+          const branches = await brRes.json();
+          const commitChecks = await Promise.allSettled(
+            branches.map(b =>
+              fetch(`https://api.github.com/repos/${owner}/${name}/commits/${b.commit.sha}`)
+                .then(r => r.ok ? r.json() : null)
+                .then(c => ({ branch: b.name, commit: c }))
+            )
+          );
+          for (const item of commitChecks) {
+            if (item.status === "fulfilled" && item.value && isAuthoredByUser(item.value.commit)) {
+              const c = item.value.commit;
+              const date = (c.commit && c.commit.author && c.commit.author.date) || "";
+              if (!latestCommit || date > latestCommit.date) {
+                const msg = ((c.commit && c.commit.message) || "").trim();
+                const lines = msg.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+                const subject = lines[0] || `Commit ${c.sha.slice(0, 7)}`;
+                const body = lines.length > 1 ? lines.slice(1).join(" ") : subject;
+                latestCommit = {
+                  sha: c.sha.slice(0, 7),
+                  subject,
+                  body,
+                  date,
+                  branch: item.value.branch,
+                  url: c.html_url || `${repo.html_url}/commit/${c.sha}`
+                };
+              }
+            }
+          }
+        }
+      } catch (_) {}
+
+      if (!pr && !latestCommit) return null;
+
+      if (pr) {
+        const prNum = pr.number;
+        const rawTitle = (pr.title || "").trim();
+        const shortTitle = rawTitle.replace(/^\[[^\]]+\]\s*/, "").trim() || rawTitle;
+        let cleanBody = (pr.body || "")
+          .replace(/^(closes|fixes|resolves)\s+#?\d+\s*/i, "")
+          .replace(/[#*`>\[\]]+/g, "")
+          .replace(/^summary\s*/i, "")
+          .replace(/\s+/g, " ")
+          .trim();
+        if (latestCommit && cleanBody.length < 30) cleanBody = latestCommit.body;
+        const descTrKnown = name.toLowerCase() === "polystrata"
+          ? "Uzun bağlamlı büyük dil modelleri için çift tamponlu asenkron PCIe DMA ve tam Q4_0 KV önbellek sıkıştırması ile gerçek Host-RAM KV akışı (--kv-resident) sağlar."
+          : (cleanBody || rawTitle);
+        return {
+          isPr: true,
+          prNum,
+          sha: latestCommit ? latestCommit.sha : "",
+          branch: latestCommit ? latestCommit.branch : "PR",
+          shortTitle,
+          descEn: cleanBody || rawTitle,
+          descTr: descTrKnown,
+          url: pr.html_url,
+          priority: 95
+        };
+      }
+
+      const shortSubj = latestCommit.subject.replace(/^\[[^\]]+\]\s*/, "").trim() || latestCommit.subject;
+      return {
+        isPr: false,
+        sha: latestCommit.sha,
+        branch: latestCommit.branch,
+        shortTitle: shortSubj,
+        descEn: latestCommit.body,
+        descTr: latestCommit.body,
+        url: latestCommit.url,
+        priority: 88
+      };
+    }
+
+    function buildLocalizedCardModel(repo, dict) {
+      const name = repo.name;
+      const lang = repo.language || "C++";
+      const stars = repo.stargazers_count || 0;
+      const locale = currentLang === "tr" ? "tr-TR" : "en-US";
+      const updated = repo.pushed_at
+        ? new Date(repo.pushed_at).toLocaleDateString(locale, { month: "short", year: "numeric" }).toUpperCase()
+        : "";
+
+      if (repo._forkContrib) {
+        const fc = repo._forkContrib;
+        if (fc.isPr) {
+          return {
+            tag: `${dict.fork_pr_prefix} #${fc.prNum} // ${name.toUpperCase()}`,
+            badge: `PR #${fc.prNum}` + (fc.sha ? ` · ${fc.sha}` : ""),
+            title: `${name} — ${fc.shortTitle}`,
+            desc: currentLang === "tr" ? fc.descTr : fc.descEn,
+            stack: `${lang} · ${dict.branch_lbl}: ${fc.branch} · ${dict.authored_by} @${USERNAME}`,
+            cta: dict.cta_pr
+          };
+        }
+        return {
+          tag: `${dict.fork_commit_prefix} // ${name.toUpperCase()}`,
+          badge: `COMMIT ${fc.sha}`,
+          title: `${name} — ${fc.shortTitle}`,
+          desc: currentLang === "tr" ? fc.descTr : fc.descEn,
+          stack: `${lang} · ${dict.branch_lbl}: ${fc.branch} · Commit ${fc.sha}`,
+          cta: dict.cta_commit
+        };
+      }
+
+      const knownEntry = KNOWN_OVERRIDES[name];
+      const ov = (knownEntry && knownEntry[currentLang]) || {};
+
+      const tag = ov.tag || `${lang.toUpperCase()} // ${dict.generic_tag_suffix}`;
+      let pillBadge = ov.badge || (stars > 0 ? `★ ${stars} · ${updated}` : (updated || lang.toUpperCase()));
+      if (name === "MRC-builds" && stars > 0) {
+        pillBadge = currentLang === "tr" ? `${stars} YILDIZ · AKTİF` : `${stars} STARS · LIVE`;
+      }
+
+      const title = ov.title || name.replace(/[-_]/g, " ");
+      const desc = ov.desc || repo.description || `${name} — ${lang} ${dict.generic_desc_suffix}`;
+      const topics = Array.isArray(repo.topics) && repo.topics.length > 0
+        ? [lang, ...repo.topics.slice(0, 3)].join(" · ")
+        : null;
+      const stack = ov.stack || topics || `${lang} · ${dict.generic_stack_suffix}`;
+      const targetUrl = resolveTargetUrl(repo);
+      const cta = ov.cta || (targetUrl !== repo.html_url ? dict.cta_live : dict.cta_repo);
+
+      return { tag, badge: pillBadge, title, desc, stack, cta };
+    }
+
+    function renderCards(repos, isLive) {
+      currentRepos = repos;
+      isLiveSynced = isLive;
+      const dict = I18N[currentLang];
+      const grid = document.getElementById("cards-grid");
+      const badge = document.getElementById("repo-count");
+
+      badge.innerHTML = `<i></i><span>${repos.length} ${isLive ? dict.sync_live : dict.sync_cached}</span>`;
+
+      grid.innerHTML = repos.map((repo, idx) => {
+        const palClass = `pal-${idx % 6}`;
+        const model = buildLocalizedCardModel(repo, dict);
+        const targetUrl = resolveTargetUrl(repo);
+        const isLong = (model.desc || "").length > 190 || (model.desc || "").includes("\n");
+
+        return `
+          <article class="project-card ${palClass}">
+            <div style="width:100%">
+              <div class="pc-top">
+                <span class="pc-tag">${escapeHtml(model.tag)}</span>
+                <span class="pc-badge">${escapeHtml(model.badge)}</span>
+              </div>
+              <a href="${escapeHtml(targetUrl)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">
+                <h3 title="${escapeHtml(model.title)}">${escapeHtml(model.title)}</h3>
+              </a>
+              <div class="pc-desc-wrap">
+                <p class="pc-desc">${escapeHtml(model.desc)}</p>
+              </div>
+            </div>
+            <div class="pc-foot">
+              <span class="pc-foot-stack" title="${escapeHtml(model.stack)}">${escapeHtml(model.stack)}</span>
+              <span class="pc-foot-actions">
+                ${isLong ? `<button type="button" class="pc-toggle" data-expanded="false">${escapeHtml(dict.show_more)}</button>` : ""}
+                <a class="pc-open" href="${escapeHtml(targetUrl)}" target="_blank" rel="noopener">${escapeHtml(model.cta)}</a>
+              </span>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      grid.querySelectorAll(".pc-toggle").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const card = btn.closest(".project-card");
+          const expanded = card.classList.toggle("is-expanded");
+          btn.setAttribute("data-expanded", expanded ? "true" : "false");
+          btn.textContent = expanded ? dict.show_less : dict.show_more;
+        });
+      });
+    }
+
+    function applyLanguage(lang) {
+      currentLang = (lang === "tr") ? "tr" : "en";
+      const dict = I18N[currentLang];
+      document.documentElement.lang = currentLang;
+      document.title = dict.page_title;
+
+      try { localStorage.setItem("mrccorps_lang", currentLang); } catch (_) {}
+
+      document.querySelectorAll(".lang-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-lang") === currentLang);
+      });
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) el.textContent = dict[key];
+      });
+
+      renderCards(currentRepos, isLiveSynced);
+    }
+
+    document.querySelectorAll(".lang-btn").forEach(btn => {
+      btn.addEventListener("click", () => applyLanguage(btn.getAttribute("data-lang")));
+    });
+
+    async function syncPublicRepositories() {
+      applyLanguage(detectInitialLanguage());
+
+      try {
+        const urls = [
+          `https://api.github.com/users/${USERNAME}/repos?per_page=100&sort=updated`,
+          ...ORGS.map(org => `https://api.github.com/orgs/${org}/repos?per_page=100&sort=updated`)
+        ];
+
+        const [prSearchRes, ...responses] = await Promise.allSettled([
+          fetch(`https://api.github.com/search/issues?q=${encodeURIComponent(`author:${USERNAME} type:pr`)}&sort=updated&per_page=100`),
+          ...urls.map(u => fetch(u))
+        ]);
+
+        const prsByRepo = new Map();
+        if (prSearchRes.status === "fulfilled" && prSearchRes.value.ok) {
+          const prData = await prSearchRes.value.json();
+          for (const item of (prData.items || [])) {
+            const rName = (item.repository_url || "").split("/").pop().toLowerCase();
+            if (rName && !EXCLUDED_REPOS.has(rName) && !prsByRepo.has(rName)) {
+              prsByRepo.set(rName, item);
+            }
+          }
+        }
+
+        const seen = new Set();
+        const rawCandidates = [];
+
+        for (const res of responses) {
+          if (res.status === "fulfilled" && res.value.ok) {
+            const items = await res.value.json();
+            for (const r of items) {
+              const name = r && r.name;
+              if (!name || r.private) continue;
+              if (EXCLUDED_REPOS.has(name) || EXCLUDED_REPOS.has(name.toLowerCase())) continue;
+              if (seen.has(name)) continue;
+              seen.add(name);
+              rawCandidates.push(r);
+            }
+          }
+        }
+
+        const collected = [];
+        for (const r of rawCandidates) {
+          if (r.fork) {
+            const contrib = await inspectForkContribution(r, prsByRepo);
+            if (!contrib) continue;
+            r._forkContrib = contrib;
+          }
+          collected.push(r);
+        }
+
+        if (collected.length > 0) {
+          collected.sort((a, b) => {
+            const pa = (a._forkContrib && a._forkContrib.priority) || (KNOWN_OVERRIDES[a.name] && KNOWN_OVERRIDES[a.name].priority) || 50;
+            const pb = (b._forkContrib && b._forkContrib.priority) || (KNOWN_OVERRIDES[b.name] && KNOWN_OVERRIDES[b.name].priority) || 50;
+            if (pb !== pa) return pb - pa;
+            const sa = a.stargazers_count || 0;
+            const sb = b.stargazers_count || 0;
+            if (sb !== sa) return sb - sa;
+            return new Date(b.pushed_at || 0) - new Date(a.pushed_at || 0);
+          });
+          renderCards(collected, true);
+        }
+      } catch (err) {
+        // Baseline cards remain visible if offline or rate-limited
+      }
+    }
+
+    syncPublicRepositories();
+  </script>
+</body>
+</html>
